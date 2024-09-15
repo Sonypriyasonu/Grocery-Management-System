@@ -33,8 +33,7 @@ class IncorrectPin(Exception):
 def addItems(a):        #Adding items in grocery
     global g_items
     while True:
-        name=input("\nEnter the name of item to add or '*' to exit: ").lower()
-        
+        name=input("\nEnter the name of item to add or '*' to exit: ").lower()        
         try:
             if name=='*':
                 break
@@ -168,23 +167,23 @@ def addcart():
 def updatecart():
     print_cart()
     item=input("\nEnter item you want to update: ").lower()
+    if item not in cart:
+        print("\nException occurred: Item not found in cart")
+        return
     while(1):
         try:
-            if item in cart:
-                q=int(input("Enter new quantity: "))
-                if q<0 :
-                    raise InvalidInputError
-                elif q>g_items[item][1]:
-                    print("Sorry, we don't have enough quantity")
-                    break
-                else:
-                    g_items[item][1]+=cart[item]        #adding cart quantity to g_items 
-                    cart[item]=q                        #updating quantity with new quantity
-                    g_items[item][1]-=q                 #removing new quantity from g_items
-                    print("\nQuantity updated successfully")
-                    break
+            q=int(input("Enter new quantity: "))
+            if q<0 :
+                raise InvalidInputError
+            elif q>g_items[item][1]:
+                print("Sorry, we don't have enough quantity")
+                break
             else:
-                raise ItemNotFound
+                g_items[item][1]+=cart[item]        #adding cart quantity to g_items 
+                cart[item]=q                        #updating quantity with new quantity
+                g_items[item][1]-=q                 #removing new quantity from g_items
+                print("\nQuantity updated successfully")
+                break
         except InvalidInputError:
             print("\nException occurred: Invalid input. \n\nPlease enter positive number")
         except ItemNotFound:   
